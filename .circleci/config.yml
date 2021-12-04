@@ -192,9 +192,10 @@ jobs:
             py3-pip \
             && pip3 install --upgrade pip \
             && pip3 install --no-cache-dir \
-                awscli \
-            apk add --update ansible
-            yum install -y tar gzip
+            awscli \
+            pip3 install cffi \
+            pip3 install ansible \
+            apk add tar gzip \
       - run:
           name: Configure server
           command: |
