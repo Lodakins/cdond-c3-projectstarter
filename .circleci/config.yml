@@ -188,13 +188,13 @@ jobs:
           name: Install dependencies
           command: |
             apk add --no-cache \
+            apk add awscli
             python3 \
             py3-pip \
             && pip3 install --upgrade pip \
             && pip3 install --no-cache-dir \
-            awscli \
-            pip3 install cffi \
-            pip3 install ansible \
+            apk add cffi \
+            apk add ansible \
             apk add tar gzip \
       - run:
           name: Configure server
