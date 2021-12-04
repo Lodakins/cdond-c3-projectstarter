@@ -181,7 +181,7 @@ jobs:
     steps:
       - checkout
       - run: apk add --update curl
-      - run: yum install -y tar gzip
+      - run: apk add tar gzip
       - add_ssh_keys:
           fingerprints: ["b2:1e:84:aa:f1:b6:9e:44:25:ff:90:09:1f:16:ea:a1"]
       - attach_workspace:
