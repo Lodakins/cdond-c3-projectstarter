@@ -296,6 +296,7 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
+            #npm install
       - run:
           name: Deploy backend
           command: |
