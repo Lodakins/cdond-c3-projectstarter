@@ -246,7 +246,7 @@ jobs:
       - checkout
       - run: apk add --update curl
       - run: apk add tar gzip
-      - run: apk add node npm 
+      - run: apk add --update nodejs 
       - attach_workspace:
           at: ~/
       - run:
