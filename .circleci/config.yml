@@ -177,9 +177,11 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: alpine:latest
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - run: apk add --update curl
+      - run: yum install -y tar gzip
       - add_ssh_keys:
           fingerprints: ["b2:1e:84:aa:f1:b6:9e:44:25:ff:90:09:1f:16:ea:a1"]
       - attach_workspace:
@@ -187,15 +189,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            apk add --update ansible \
             apk add --no-cache \
             python3 \
             py3-pip \
             && pip3 install --upgrade pip \
             && pip3 install --no-cache-dir \
             awscli \
-            apk add cffi \
-            apk add ansible \
-            apk add tar gzip \
       - run:
           name: Configure server
           command: |
