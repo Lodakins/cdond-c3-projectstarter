@@ -5,7 +5,7 @@ commands:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
       id:
-          type: string
+        type: string
     steps:
       - run:
           name: Destroy environments
@@ -23,7 +23,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS = $(curl -H "token:<< parameters.id >>" --request GET  https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
+            SUCCESS = $(curl -H "token:<< parameters.id >>" --request GET  https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7})
             # SUCCESS = 1
             if(( $SUCCESS==1 )); 
             then
@@ -244,10 +244,11 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - run: apk add --update curl
+      - run: apk add tar gzip
+      - run: apk add node npm 
       - attach_workspace:
           at: ~/
-      - run: apk add --update curl
-      - run: apk add node npm tar gzip
       - run:
           name: Install python and awscli
           command: |
@@ -281,8 +282,6 @@ jobs:
           id: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy-environment:
           id: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-      - revert-migrations:
-          id: "${CIRCLE_WORKFLOW_ID:0:10}"
 
   deploy-backend:
     docker:
