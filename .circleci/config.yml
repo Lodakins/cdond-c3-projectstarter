@@ -241,27 +241,20 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - run: apk add --update curl
-      - run: apk add tar gzip
-      - run: apk add --update nodejs 
+      - run: yum install -y tar gzip
+      # - run: apk add tar gzip
+      # - run: apk add --update nodejs 
+      # - run: apk add --update npm 
       - attach_workspace:
           at: ~/
       - run:
           name: Install python and awscli
           command: |
-            apk add --no-cache \
-            python3 \
-            py3-pip \
-            && pip3 install --upgrade pip \
-            && pip3 install --no-cache-dir \
-                awscli \
-      - run:
-          name: Install or Update Ansible
-          command: |
-            apk add --update ansible 
+            curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -
+            sudo yum install nodejs
       - run:
           name: Get backend url
           command: |
