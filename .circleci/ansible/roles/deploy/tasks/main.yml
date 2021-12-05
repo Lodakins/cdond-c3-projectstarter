@@ -37,7 +37,7 @@
 
 - name: Copy backend tar.gz file and unzip it
   unarchive:
-    src:   backend.tar.gz
+    src:  artifact.tar.gz
     dest: /home/ubuntu/backend/
 
 - name: "start server"
