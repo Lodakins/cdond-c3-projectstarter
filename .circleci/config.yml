@@ -26,8 +26,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS = $(curl -H "token:<< parameters.id >>" --request GET  https://api.memstash.io/values/migration_$<< parameters.id >>)
-            if((${SUCCESS}==1))
+            export MIG-SUCCESS = $(curl -H "token:<< parameters.id >>" --request GET  https://api.memstash.io/values/migration_$<< parameters.id >>)
+            if(${MIG-SUCCESS} ==1)
             then
              cd ~/project/backend
              npm install
