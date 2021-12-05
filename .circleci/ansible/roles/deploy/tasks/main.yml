@@ -34,6 +34,10 @@
     path: ~/backend
     state: directory
 
+- name: printing working directoru
+  become: true
+  shell: |
+    pwd
 
 - name: Copy backend tar.gz file and unzip it
   unarchive:
@@ -43,4 +47,4 @@
 - name: "start server"
   command: pm2 start -f ./main.js -- run start
   args:
-    chdir: /home/ubuntu/backend/backend/dist/
+    chdir: /home/ubuntu/backend/dist/

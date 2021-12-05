@@ -300,6 +300,12 @@ jobs:
             npm i
             npm run build
             echo build successful
+            echo NODE_ENV=production >> "/root/project/backend/dist/.env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> "/root/project/backend/dist/.env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> "/root/project/backend/dist/.env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "/root/project/backend/dist/.env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "/root/project/backend/dist/.env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "/root/project/backend/dist/.env"
             cd ..
             # Zip the directory
             tar -C backend -czvf backend.tar.gz .
