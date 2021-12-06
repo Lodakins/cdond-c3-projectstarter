@@ -438,7 +438,6 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update  curl rsync 
-            ansible --version
             pip install awscli
       - run:
           name: Remove old stacks and files
