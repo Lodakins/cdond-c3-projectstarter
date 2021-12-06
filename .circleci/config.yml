@@ -366,7 +366,7 @@ jobs:
               --query "Reservations[*].Instances[*].PublicIpAddress" \
               --output text)
             echo "${BACKEND_IP}"
-            curl -s "http://${BACKEND_IP}:3030/api/status" | grep "ok"
+            # curl -s "http://${BACKEND_IP}:3030/api/status" | grep "ok"
             # if curl -s "http://${BACKEND_IP}:3030/api/status" | grep "ok"
             # then
             #     return 0
@@ -375,10 +375,10 @@ jobs:
             # fi
 
 
-      - destroy-environment:
-          id: "${CIRCLE_WORKFLOW_ID:0:7}"
-      - revert-migrations:
-          id: "${CIRCLE_WORKFLOW_ID:0:10}"
+      # - destroy-environment:
+      #     id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      # - revert-migrations:
+      #     id: "${CIRCLE_WORKFLOW_ID:0:10}"
 
   # cloudfront-update:
   #   docker:
