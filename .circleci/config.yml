@@ -258,8 +258,7 @@ jobs:
             export BACKEND_IP=$(aws ec2 describe-instances --filters 'Name=tag:project,Values=udapeople-backend' --query "Reservations[*].Instances[*].PublicIpAddress" --output=text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
-            echo "${CIRCLE_WORKFLOW_ID:0:10}"
-            curl -H "Content-Type: text/plain" -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request PUT --data "${API_URL}" https://api.memstash.io/values/backendip_${CIRCLE_WORKFLOW_ID:0:10}
+            curl -H "Content-Type: text/plain" -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request PUT --data "${BACKEND_IP}" https://api.memstash.io/values/backendip_${CIRCLE_WORKFLOW_ID:0:10}
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
       - run:
@@ -360,10 +359,10 @@ jobs:
           name: Backend smoke test.
           command: |
             BACKEND_API_URL= $(curl -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request GET https://api.memstash.io/values/backendip_${CIRCLE_WORKFLOW_ID:0:10})
-            echo ${BACKEND_API_URL}
-            export IPURL ="${BACKEND_API_URL}/api/status"
-            echo ${IPURL}
-            if curl -s ${IPURL} | grep "ok"
+            echo "${BACKEND_API_URL}"
+            export API_URL="http://${BACKEND_API_URL}:3030"
+            echo "${API_URL}"
+            if curl -s "${API_URL}/api/status" | grep "ok"
             then
                 return 0
             else
