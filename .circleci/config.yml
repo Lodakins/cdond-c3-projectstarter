@@ -358,15 +358,20 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            BACKEND_API_URL= $(curl -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request GET https://api.memstash.io/values/backendip_${CIRCLE_WORKFLOW_ID:0:10})
+            export BACKEND_API_URL= $(curl -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request GET https://api.memstash.io/values/backendip_${CIRCLE_WORKFLOW_ID:0:10})
             API_URL="http://${BACKEND_API_URL}:3030"
             echo ${API_URL}
-            # if curl "${API_URL}/api/status" | grep "ok"
-            # then
-            #     return 0
-            # else
-            #     return 1
-            # fi
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --query "Reservations[*].Instances[*].PublicIpAddress" \
+              --output text)
+            echo "${BACKEND_IP}"
+            if curl -s "http://${BACKEND_IP}:3030/api/status" | grep "ok"
+            then
+                return 0
+            else
+                return 1
+            fi
 
 
       - destroy-environment:
@@ -374,20 +379,20 @@ jobs:
       - revert-migrations:
           id: "${CIRCLE_WORKFLOW_ID:0:10}"
 
-#   cloudfront-update:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Update cloudfront distribution
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
+  # cloudfront-update:
+  #   docker:
+  #     # Docker image here that supports AWS CLI
+  #   steps:
+  #     # Checkout code from git
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           # your code here
+  #     - run:
+  #         name: Update cloudfront distribution
+  #         command: |
+  #           # your code here
+  #     # Here's where you will add some code to rollback on failure
 
 # cleanup:
 #   docker:
