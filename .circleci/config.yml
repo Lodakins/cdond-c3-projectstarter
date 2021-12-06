@@ -235,7 +235,7 @@ jobs:
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               echo migration successful
-              curl -H "Content-Type: text/plain" -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request PUT --data "1" \
+              curl -H "Content-Type: text/plain" -H "token:76f9514c-4cdd-4658-88f9-d7a705af6604" --request PUT --data "1" \
                https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:10}
               # curl -H "Content-Type: text/plain" -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:10}
               echo migration successful
