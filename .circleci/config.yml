@@ -26,9 +26,9 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS = $(curl -H "token:<< parameters.id >>" --request GET  https://api.memstash.io/values/migration_$<< parameters.id >>)
-            echo $SUCCESS
-            if (( $SUCCESS == 1 ));
+            SUCCESS = $(curl -H "token:<<parameters.id >>" --request GET  https://api.memstash.io/values/migration_$<<parameters.id >>)
+            echo ${SUCCESS}
+            if (( ${SUCCESS} == 1 ));
              then
               cd ~/project/backend
               npm install
@@ -223,9 +223,14 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
+            echo  ${CIRCLE_WORKFLOW_ID:0:10}
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl -H "Content-Type: text/plain" -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:10}
+              echo migration successful
+              curl -H "Content-Type: text/plain" -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request PUT --data "1" \
+               https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:10}
+              # curl -H "Content-Type: text/plain" -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:10}
+              echo migration successful
             else
                echo migration not successful
             fi
