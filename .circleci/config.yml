@@ -430,9 +430,16 @@ jobs:
 
   cleanup:
     docker:
-      - image: circleci/node:13.8.0
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - run: apk add --update curl
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update  curl rsync 
+            ansible --version
+            pip install awscli
       - run:
           name: Remove old stacks and files
           command: |
