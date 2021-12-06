@@ -415,12 +415,14 @@ jobs:
                 https://api.memstash.io/values/udapeople_oldworkflow
               
             echo "${OldWorkflowID}"
+
+            echo "${CIRCLE_WORKFLOW_ID:0:7}"
             
             aws cloudformation deploy \
-              --template-file .circleci/files/cloudfront.yml \
-              --tags project=udapeople-"${CIRCLE_WORKFLOW_ID:0:7}" \
-              --stack-name "udapeople-blue" \
-              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}"
+            --template-file .circleci/files/cloudfront.yml \
+            --stack-name InitialStack-${OldWorkflowID} \
+            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --tags project=udapeople
       - destroy-environment:
           id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
