@@ -361,6 +361,8 @@ jobs:
             BACKEND_API_URL= $(curl -H "token:${CIRCLE_WORKFLOW_ID:0:10}" --request GET https://api.memstash.io/values/backendip_${CIRCLE_WORKFLOW_ID:0:10})
             API_URL="http://${BACKEND_API_URL}:3030"
             echo "${API_URL}"
+
+            
       - destroy-environment:
           id: "${CIRCLE_WORKFLOW_ID:0:7}"
       - revert-migrations:
