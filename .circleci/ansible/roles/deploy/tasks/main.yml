@@ -34,7 +34,7 @@
     path: ~/backend
     state: directory
 
-- name: printing working directoru
+- name: printing working directory
   become: true
   shell: |
     pwd
@@ -44,7 +44,18 @@
     src:  backend.tar.gz
     dest: /home/ubuntu/backend/
 
-- name: "start server"
-  command: pm2 start -f ./main.js -- run start
-  args:
-    chdir: /home/ubuntu/backend/dist/
+- name: "NPM Install"
+  shell:
+    cmd: npm install
+    chdir: /home/ubuntu/backend/
+
+- name: "Start backend with pm2"
+  become: yes
+  shell: |
+    cd /home/ubuntu/backend/dist
+    pm2 start main.js --name backend
+
+# - name: "start server"
+#   command: pm2 start -f ./main.js -- run start
+#   args:
+#     chdir: /home/ubuntu/backend/dist/
