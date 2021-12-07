@@ -446,8 +446,8 @@ jobs:
                   --request GET https://api.memstash.io/values/udapeople_oldworkflow)
             echo "${OldWorkflowID}"
             echo "${CIRCLE_WORKFLOW_ID:0:7}"
-            export STACKS=$(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-                    --stack-status-filter CREATE_COMPLETE --no-paginate --output text)            
+            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+                    --stack-status-filter CREATE_COMPLETE --no-paginate --output text))            
             echo "${STACKS[@]}"  
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
@@ -455,6 +455,10 @@ jobs:
               aws s3 rb s3://udapeople-"${OldWorkflowID}" --force
               aws cloudformation delete-stack --stack-name udapeople-"${OldWorkflowID}"
             fi
+      - destroy-environment:
+          id: "${CIRCLE_WORKFLOW_ID:0:7}"
+      - revert-migrations:
+          id: "${CIRCLE_WORKFLOW_ID:0:10}"
          
 
 workflows:
